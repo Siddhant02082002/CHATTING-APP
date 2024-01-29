@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import axios from "axios";
+import Image from "next/image";
 import {
     Dialog,
     DialogContent,
