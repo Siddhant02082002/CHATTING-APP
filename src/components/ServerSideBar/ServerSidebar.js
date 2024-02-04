@@ -39,7 +39,7 @@ const ServerSidebar = async ({ serverId }) => {
     const audioChannel = serverDetails?.channels.filter((channel) => channel.type === "AUDIO")
     const videoChannel = serverDetails?.channels.filter((channel) => channel.type === "VIDEO");
     const members = serverDetails?.members.filter((member) => member.profileId !== profile.id);
-    console.log(members);
+    // console.log(members);
     const role = serverDetails?.members.find((member) => member.profileId === profile.id)?.role;
     return (
         <div className="flex flex-col h-full w-full rounded-s-xl bg-neutral-700 bg-opacity-95">

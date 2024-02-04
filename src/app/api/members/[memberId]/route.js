@@ -58,7 +58,7 @@ export async function PATCH(req, { params }) {
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    console.log(req.url)
+    // console.log(req.url)
 
 
     if (!serverId) {
@@ -68,7 +68,7 @@ export async function PATCH(req, { params }) {
     if (!params.memberId) {
       return new NextResponse("MemberId missing", { status: 400 });
     }
-    console.log("Server ", params.memberId)
+    // console.log("Server ", params.memberId)
     const server = await db.server.update({
       where: {
         id: serverId,

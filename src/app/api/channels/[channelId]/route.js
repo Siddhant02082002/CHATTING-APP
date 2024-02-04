@@ -45,7 +45,7 @@ export async function DELETE(req, { params }) {
                 }
             }
         });
-        console.log(server)
+        // console.log(server)
         return NextResponse.json(server);
     } catch (error) {
         return new NextResponse("Internal error", { status: 500 });
