@@ -5,6 +5,9 @@ import { db } from "@/lib/db";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import ChatHeader from "@/components/Chat/ChatHeader";
+import ChatInput from "@/components/Chat/ChatInput";
+import EmojiPick from "@/components/providers/emojiPicker";
+import { Smile } from "lucide-react";
 
 
 
@@ -43,7 +46,7 @@ const MemberIdPage = async ({
 
   const otherMember = memberOne.profileId === profile.id ? memberTwo : memberOne;
 
-  return ( 
+  return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <ChatHeader
         imageUrl={otherMember.profile.imageUrl}
@@ -51,9 +54,11 @@ const MemberIdPage = async ({
         serverId={params.serverId}
         type="conversation"
       />
-      
+      <h1 className="h-full">MESSAGE</h1>
+      <ChatInput type="conversation" apiUrl="/api/socket/direct-messages" query={{ conversationId: conversation.id }}></ChatInput>
+
     </div>
-   );
+  );
 }
- 
+
 export default MemberIdPage;

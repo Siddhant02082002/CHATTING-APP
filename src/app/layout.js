@@ -7,6 +7,7 @@ import Bagimg from "../../public/bagimg.jpg";
 import a from "../../public/a.jpg"
 import c from "../../public/c.jpg"
 import { ModalProvider } from "@/components/providers/modal-provider";
+import { SocketProvider } from "@/components/providers/socket-provider";
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata = {
@@ -28,8 +29,10 @@ export default function RootLayout({ children }) {
           enableSystem="false"
           disableTransitionOnChange
         >
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider></body>
       </html>
     </ClerkProvider>

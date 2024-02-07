@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import ChatHeader from "@/components/Chat/ChatHeader";
+import ChatInput from "@/components/Chat/ChatInput";;
 const ChannelId = async ({ params }) => {
     const profile = await currentProfile();
     if (!profile) {
@@ -29,6 +30,7 @@ const ChannelId = async ({ params }) => {
     return (
         <div>
             <ChatHeader name={channel.name} serverId={serverId} type="channel"></ChatHeader>
+            <ChatInput></ChatInput>
         </div>
     );
 }
