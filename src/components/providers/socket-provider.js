@@ -28,7 +28,6 @@ export const SocketProvider = ({
   useEffect(() => {
     const socketInstance = new (ClientIO)(process.env.NEXT_PUBLIC_SITE_URL, {
       path: "/api/socket/io",
-      transports: ["websocket"],
     });
 
     socketInstance.on("connect", () => {
@@ -38,7 +37,9 @@ export const SocketProvider = ({
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
     });
-
+    socketInstance.on("connection error",(err)=>{
+      console.log(err);
+    })
     setSocket(socketInstance);
 
     return () => {
