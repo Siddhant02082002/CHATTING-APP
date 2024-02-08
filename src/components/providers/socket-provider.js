@@ -24,8 +24,8 @@ export const SocketProvider = ({
 }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-  console.log(isConnected)
-  console.log(socket)
+  console.log("1", isConnected)
+  console.log("2",socket)
   useEffect(() => {
     const socketInstance = new (ClientIO)(process.env.NEXT_PUBLIC_SITE_URL, {
       path: "/api/socket/io",
