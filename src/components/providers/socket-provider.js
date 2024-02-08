@@ -24,7 +24,8 @@ export const SocketProvider = ({
 }) => {
   const [socket, setSocket] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
-
+  console.log(isConnected)
+  console.log(socket)
   useEffect(() => {
     const socketInstance = new (ClientIO)(process.env.NEXT_PUBLIC_SITE_URL, {
       path: "/api/socket/io",
@@ -37,9 +38,7 @@ export const SocketProvider = ({
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
     });
-    socketInstance.on("connection error",(err)=>{
-      console.log(err);
-    })
+    
     setSocket(socketInstance);
 
     return () => {
