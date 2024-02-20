@@ -6,8 +6,9 @@ import { getOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import ChatHeader from "@/components/Chat/ChatHeader";
 import ChatInput from "@/components/Chat/ChatInput";
-import EmojiPick from "@/components/providers/emojiPicker";
+import EmojiPick from "@/components/emojiPicker";
 import { Smile } from "lucide-react";
+import ChatMessage from "@/components/Chat/ChatMessage";
 
 
 
@@ -54,7 +55,17 @@ const MemberIdPage = async ({
         serverId={params.serverId}
         type="conversation"
       />
-      <h1 className="h-full">MESSAGE</h1>
+      <ChatMessage member={currentMember}
+        name={otherMember.profile.name}
+        chatId={conversation.id}
+        type="conversation"
+        apiUrl="/api/directMessages"
+        paramKey="conversationId"
+        paramValue={conversation.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: conversation.id,
+        }}></ChatMessage>
       <ChatInput type="conversation" apiUrl="/api/socket/direct-messages" query={{ conversationId: conversation.id }}></ChatInput>
 
     </div>

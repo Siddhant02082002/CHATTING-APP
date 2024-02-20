@@ -8,6 +8,7 @@ import a from "../../public/a.jpg"
 import c from "../../public/c.jpg"
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { SocketProvider } from "@/components/providers/socket-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata = {
@@ -31,7 +32,9 @@ export default function RootLayout({ children }) {
         >
             <SocketProvider>
               <ModalProvider />
-              {children}
+              <QueryProvider>
+                {children}
+              </QueryProvider>
             </SocketProvider>
           </ThemeProvider></body>
       </html>

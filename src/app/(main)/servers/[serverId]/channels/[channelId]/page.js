@@ -30,7 +30,7 @@ const ChannelId = async ({ params }) => {
     return (
         <div>
             <ChatHeader name={channel.name} serverId={serverId} type="channel"></ChatHeader>
-            <ChatInput></ChatInput>
+            <ChatInput type="channel" apiUrl="/api/socket/messages" query={{channelId:channel.id, serverId: channel.serverId}}></ChatInput>
         </div>
     );
 }

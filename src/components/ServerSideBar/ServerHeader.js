@@ -8,8 +8,8 @@ const ServerHeader = ({ server,role }) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-none" asChild>
-                <button className="w-full px-3 flex text-md font-semibold uppercase border-neutral-200 bg-neutral-800 opacity-85 h-12 items-center hover:bg-zinc-700/10">
+            <DropdownMenuTrigger className="focus:outline-none bg-neutral-700" asChild>
+                <button className="w-full h-16 px-3 flex text-md font-semibold uppercase border-neutral-200 bg-neutral-800 opacity-85 items-center hover:bg-zinc-700/10">
                     {server.name}
                     <ChevronDown className="h-5 w-5 ml-auto"></ChevronDown>
                 </button>

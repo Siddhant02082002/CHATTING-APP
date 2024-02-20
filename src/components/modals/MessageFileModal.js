@@ -40,7 +40,7 @@ export const MessageFileModal = () => {
                 url: apiUrl || "",
                 query,
             })
-
+            console.log(values)
             await axios.post(url,{
                 ...values,
                 content: values.fileUrl
@@ -75,7 +75,6 @@ export const MessageFileModal = () => {
                                     <FormItem>
                                         <FormControl>
                                             <FileUpload endpoint="messageFile" value={field.value} onChange={field.onChange}/>
-
                                         </FormControl>
                                     </FormItem>
                                 )}
