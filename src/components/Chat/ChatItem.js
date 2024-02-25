@@ -4,7 +4,7 @@ import { ToolTip } from "../actions/action-tooltip";
 import { MemberRole } from "@prisma/client";
 import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useModal } from "@/hooks/modal-store";
 import { Tooltip } from "../actions/action-tooltip";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
@@ -25,7 +25,7 @@ const roleIconMap = {
 const formSchema = z.object({
     content: z.string().min(1),
 });
-const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, deleted,socketUrl,socketQuery }) => {
+const ChatItem = ({ id, content, currentMember, member, timestamp, fileUrl, deleted, socketUrl, socketQuery }) => {
     const { onOpen } = useModal()
     const isAdmin = currentMember.role === MemberRole.ADMIN;
     const isOwner = currentMember.id === member.id;
@@ -36,7 +36,17 @@ const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, delet
     const isImage = !isPDF && fileUrl;
     const [isEditing, setEditing] = useState(false);
     const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape" || event.keyCode === 27) {
+                setEditing(false);
+            }
+        };
 
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => window.removeEventListener("keyDown", handleKeyDown);
+    }, []);
     const canEditMessages = !deleted && isOwner && !fileUrl;
     // console.log(fileType)
 
@@ -46,16 +56,16 @@ const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, delet
             content: content
         }
     });
-    const onSubmit = async(values) =>{
-        try{
+    const onSubmit = async (values) => {
+        try {
             const url = qs.stringifyUrl({
                 url: `${socketUrl}/${id}`,
                 query: socketQuery,
             })
-            await axios.patch(url,values);
+            await axios.patch(url, values);
             form.reset();
             setEditing(false);
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -96,7 +106,7 @@ const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, delet
                     {!fileUrl && isEditing && (
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)}>
-                                <FormField control={form.control} name="content" render={({field})=>(
+                                <FormField control={form.control} name="content" render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
                                             <div>
@@ -123,7 +133,7 @@ const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, delet
                         </ToolTip>
                     )}
                     <ToolTip message="DELETE">
-                        <Trash2 onClick={() => onOpen("deleteMessage",{
+                        <Trash2 onClick={() => onOpen("deleteMessage", {
                             apiUrl: `${socketUrl}/${id}`,
                             query: socketQuery,
                         })} className="cursor-pointer text-red-400 ml-auto w-4 h-4"></Trash2>

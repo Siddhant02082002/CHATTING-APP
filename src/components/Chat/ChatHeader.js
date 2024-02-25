@@ -8,7 +8,7 @@ const ChatHeader = ({ name, serverId, type, imageUrl }) => {
         <div className="text-md font-semibold px-3 flex items-center h-14 border-neutral-200 dark:border-neutral-800 border-b-2">
             <MobileToggle serverId={serverId} />
             {type === "channel" ?
-                (<Hash className="w-5 h-5 text-zinc-500 dark:text-zinc-400 mr-2"></Hash>) : <img src={imageUrl} className="w-10 h-10 rounded-full mr-2"></img>
+                (<Hash className="w-5 h-5 text-zinc-500 dark:text-zinc-400 mr-2"></Hash>) : <img src={imageUrl} alt={name} className="w-10 h-10 rounded-full mr-2"></img>
 
             }
             <p>{name}</p>
