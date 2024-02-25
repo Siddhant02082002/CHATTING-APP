@@ -2,7 +2,7 @@ import { currentProfile } from "@/lib/current-profile";
 import { NextResponse } from "next/server";
 import { DirectMessage } from "@prisma/client";
 import { db } from "@/lib/db";
-
+const MESSAGES_BATCH = 10;
 export async function GET(req) {
     try {
         const profile = await currentProfile();
@@ -23,7 +23,7 @@ export async function GET(req) {
 
         if (cursor) {
             messages = await db.directMessage.findMany({
-                take: 10,
+                take: MESSAGES_BATCH,
                 skip: 1,
                 cursor: {
                     id: cursor,
@@ -44,7 +44,7 @@ export async function GET(req) {
             })
         } else {
             messages = await db.directMessage.findMany({
-                take: 10,
+                take: MESSAGES_BATCH,
                 where: {
                     conversationId,
                 },
@@ -63,8 +63,8 @@ export async function GET(req) {
 
         let nextCursor = null;
 
-        if (messages.length === 10) {
-            nextCursor = messages[10 - 1].id;
+        if (messages.length === MESSAGES_BATCH) {
+            nextCursor = messages[MESSAGES_BATCH - 1].id;
         }
 
         return NextResponse.json({

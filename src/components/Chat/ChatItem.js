@@ -1,3 +1,4 @@
+"use client"
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ToolTip } from "../actions/action-tooltip";
