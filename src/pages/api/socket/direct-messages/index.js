@@ -2,74 +2,75 @@
 import { currentProfilePages } from "@/lib/currentProfilePage";;
 import { db } from "@/lib/db";
 
-export default async function handler(req,res){
+export default async function handler(req, res) {
 
-    if(req.method !== "POST"){
-        return res.status(405).json({error:"Method Not allowed"})
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method Not allowed" })
     }
-    try{
+    try {
         const profile = await currentProfilePages(req);
         console.log(profile)
-        if(!profile){
-            return res.status(401).json({error:"Unauthorized"})
+        if (!profile) {
+            return res.status(401).json({ error: "Unauthorized" })
         }
-        const {content,fileUrl} = req.body;
-        const {conversationId} = req.query;
-        if(!conversationId){
-            return res.status(401).json({error:"conversationId Missing"});
+        const { content, fileUrl } = req.body;
+        const { conversationId } = req.query;
+        if (!conversationId) {
+            return res.status(401).json({ error: "conversationId Missing" });
         }
-        
-        if(!content){
-            return res.status(401).json({error:"connot allow empty content"});
+
+        if (!content) {
+            return res.status(401).json({ error: "connot allow empty content" });
         }
-        
+
         const conversation = await db.conversation.findFirst({
-            where:{
+            where: {
                 id: conversationId,
-                OR:[
+                OR: [
                     {
                         memberOne: {
                             profileId: profile.id,
                         }
                     },
                     {
-                        memberTwo:{
+                        memberTwo: {
                             profileId: profile.id,
                         }
                     }
                 ]
             },
-            include:{
-                memberOne:{
-                    include:{
+            include: {
+                memberOne: {
+                    include: {
                         profile: true,
                     }
                 },
-                memberTwo:{
-                    include:{
+                memberTwo: {
+                    include: {
                         profile: true,
                     }
                 }
             }
         })
-        
-        // console.log("conversationId",conversation)
-        // if(!conversation){
-        //     return res
-        // }
 
-        const member = conversation.memberOne.profileId === profile.id? conversation.memberOne:conversation.memberTwo
+        if (!conversation) {
+            return res.status(404).json({ message: "Conversation not found" });
+        }
 
+        const member = conversation.memberOne.profileId === profile.id ? conversation.memberOne : conversation.memberTwo
+        if (!member) {
+            return res.status(404).json({ message: "Member not found" });
+        }
         const message = await db.directMessage.create({
-            data:{
+            data: {
                 content: content,
                 fileUrl: fileUrl,
                 conversationId: conversationId,
                 memberId: member.id
             },
-            include:{
+            include: {
                 member: {
-                    include:{
+                    include: {
                         profile: true,
                     }
                 }
@@ -78,11 +79,11 @@ export default async function handler(req,res){
 
         const channelKey = `chat:${conversationId}:messages`;
 
-        res?.socket?.server?.io?.emit(channelKey,message);
+        res?.socket?.server?.io?.emit(channelKey, message);
         return res.status(200).json(message);
     }
-    catch(e){
+    catch (e) {
         console.log(e);
-        return res.status(500).json({message: "Internal Error"})
+        return res.status(500).json({ message: "Internal Error" })
     }
 }
