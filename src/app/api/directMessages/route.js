@@ -2,7 +2,6 @@ import { currentProfile } from "@/lib/current-profile";
 import { NextResponse } from "next/server";
 import { DirectMessage } from "@prisma/client";
 import { db } from "@/lib/db";
-export const dynamic = 'force-dynamic'
 const MESSAGES_BATCH = 10;
 export async function GET(req) {
     try {
