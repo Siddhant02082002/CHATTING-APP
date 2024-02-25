@@ -1,7 +1,7 @@
 
 import { MemberRole } from "@prisma/client";
-import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
+import { currentProfilePages } from "@/lib/currentProfilePage";
 
 export default async function handler(req,res) {
     if (req.method !== "DELETE" && req.method !== "PATCH") {
