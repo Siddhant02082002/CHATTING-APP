@@ -107,6 +107,28 @@ export default async function handler(req, res) {
                 }
             })
         }
+
+        if(req.method === "PATCH"){
+            if(!isMessageOwner){
+                return res.status(401).json({error: "Unauthorised"});
+            }
+
+            directMessage = await db.directMessage.update({
+                where:{
+                    id: directMessageId,
+                },
+                data:{
+                    content,
+                },
+                include:{
+                    member: {
+                        include: {
+                            profile: true,
+                        }
+                    }
+                }
+            })
+        }
         const updateKey = `chat:${conversation.id}:messages:update`;
         res?.socket?.server?.io?.emit(updateKey,directMessage);
         return res.status(200).json(directMessage);

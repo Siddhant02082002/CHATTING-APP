@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import qs from "query-string";
+import axios from "axios";
 
 const roleIconMap = {
     "GUEST": null,
@@ -39,22 +40,25 @@ const ChatItem = ({ id,content, currentMember, member, timestamp, fileUrl, delet
     const canEditMessages = !deleted && isOwner && !fileUrl;
     // console.log(fileType)
 
-    const onSubmit = async(values) =>{
-        try{
-            const url = qs.stringifyUrl({
-                url: `${socketUrl}/${id}`,
-                query: socketQuery,
-            })
-        }catch(e){
-            console.log(e)
-        }
-    }
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             content: content
         }
     });
+    const onSubmit = async(values) =>{
+        try{
+            const url = qs.stringifyUrl({
+                url: `${socketUrl}/${id}`,
+                query: socketQuery,
+            })
+            await axios.patch(url,values);
+            form.reset();
+            setEditing(false);
+        }catch(e){
+            console.log(e)
+        }
+    }
     return (
 
         <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
