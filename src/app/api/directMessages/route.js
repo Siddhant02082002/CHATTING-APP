@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 import { DirectMessage } from "@prisma/client";
 import { db } from "@/lib/db";
 
@@ -12,11 +12,12 @@ export async function GET(req) {
         const conversationId = searchParams.get("conversationId");
 
         if (!profile) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return res.status(401).json({ error: "Unauthorized" })
+            // return new NextResponse("Unauthorized", { status: 401 });
         }
 
         if (!conversationId) {
-            return new NextResponse("Conversation ID missing", { status: 400 });
+            return res.status(401).json({ error: "Unauthorized" })
         }
 
         let messages = [];
@@ -73,6 +74,6 @@ export async function GET(req) {
         });
     } catch (error) {
         console.log("[DIRECT_MESSAGES_GET]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return res.status(401).json({ error: "Unauthorized" })
     }
 }
