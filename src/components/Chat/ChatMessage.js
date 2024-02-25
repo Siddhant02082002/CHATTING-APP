@@ -1,5 +1,4 @@
 "use client"
-
 import { useChatQuery } from "@/hooks/useChatQuery";
 import useChatScrolling from "@/hooks/useChatScroll";
 import { useChatSocket } from "@/hooks/use-chat-socket";
