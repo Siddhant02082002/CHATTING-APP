@@ -36,17 +36,7 @@ const ChatItem = ({ id, content, currentMember, member, timestamp, fileUrl, dele
     const isImage = !isPDF && fileUrl;
     const [isEditing, setEditing] = useState(false);
     const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === "Escape" || event.keyCode === 27) {
-                setEditing(false);
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-
-        return () => window.removeEventListener("keyDown", handleKeyDown);
-    }, []);
+    
     const canEditMessages = !deleted && isOwner && !fileUrl;
     // console.log(fileType)
 
