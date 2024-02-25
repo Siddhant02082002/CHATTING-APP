@@ -1,3 +1,4 @@
+"use client"
 import { useModal } from "@/hooks/modal-store"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
