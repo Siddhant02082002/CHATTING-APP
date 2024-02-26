@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+export const dynamic = 'force-dynamic'
 
 const MESSAGES_BATCH = 10;
 
