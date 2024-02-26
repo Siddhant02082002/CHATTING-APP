@@ -3,7 +3,8 @@ import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import ChatHeader from "@/components/Chat/ChatHeader";
-import ChatInput from "@/components/Chat/ChatInput";;
+import ChatInput from "@/components/Chat/ChatInput"; import ChatMessage from "@/components/Chat/ChatMessage";
+;
 const ChannelId = async ({ params }) => {
     const profile = await currentProfile();
     if (!profile) {
@@ -13,24 +14,36 @@ const ChannelId = async ({ params }) => {
     const channelId = params.channelId;
     // check if Channel Exist or not 
     const channel = await db.channel.findUnique({
-        where:{
+        where: {
             id: params.channelId
         }
     });
     // if the current member is part of channel or not
     const member = await db.member.findFirst({
-        where:{
+        where: {
             serverId: params.serverId,
             profileId: profile.id,
         }
     });
-    if(!channel || !member) {
+    if (!channel || !member) {
         redirect("/");
     }
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <ChatHeader name={channel.name} serverId={serverId} type="channel"></ChatHeader>
-            <ChatInput type="channel" apiUrl="/api/socket/messages" query={{channelId:channel.id, serverId: channel.serverId}}></ChatInput>
+            <ChatMessage member={member}
+                name={channel.name}
+                chatId={channel.id}
+                type="channel"
+                apiUrl="/api/messages"
+                socketUrl="/api/socket/messages"
+                socketQuery={{
+                    channelId: channel.id,
+                    serverId: channel.serverId,
+                }}
+                paramKey="channelId"
+                paramValue={channel.id}></ChatMessage>
+            <ChatInput type="channel" apiUrl="/api/socket/messages" query={{ channelId: channel.id, serverId: channel.serverId }}></ChatInput>
         </div>
     );
 }

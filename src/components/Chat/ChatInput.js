@@ -27,10 +27,10 @@ const ChatInput = ({ apiUrl, query, type }) => {
             console.log("hello", apiUrl);
             const url = qs.stringifyUrl({
                 url: apiUrl,
-                query,
+                query: query,
             });
-            console.log(url)
-            console.log(value)
+            // console.log(url)
+            // console.log(value)
             await axios.post(url, value);
 
             form.reset();

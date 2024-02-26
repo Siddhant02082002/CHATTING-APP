@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
     try {
         const profile = await currentProfilePages(req);
-        console.log(profile)
+        // console.log(profile)
         if (!profile) {
             return res.status(401).json({ error: "Unauthorized" })
         }
