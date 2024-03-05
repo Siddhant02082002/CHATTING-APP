@@ -17,12 +17,25 @@ model Profile {
   imageUrl String @db.String
   email    String @db.String
 
-  servers  Server[]
-  members  Member[]
-  channels Channel[]
+  servers   Server[]
+  members   Member[]
+  channels  Channel[]
+  AiCHats   AICHAT[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model AICHAT {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  UserPromt      String   @db.String
+  GeminiResponse String   @db.String
+  
+  profileId      String   @db.ObjectId
+  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([profileId])
 }
 
 model Server {

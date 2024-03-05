@@ -6,13 +6,13 @@ import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment, useRef, ElementRef } from "react";
 import ChatItem from "./ChatItem";
 import { format } from "date-fns";
+import AiChatItem from "./AiChatItem";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm"
 const ChatMessage = ({ name, member, chatId, apiUrl, socketUrl, socketQuery, paramKey, paramValue, type }) => {
     const queryKey = `chat:${chatId}`;
     const addKey = `chat:${chatId}:messages`;
     const updateKey = `chat:${chatId}:messages:update`;
-
 
     const chatRef = useRef(null);
     const bottomRef = useRef(null);
@@ -22,7 +22,7 @@ const ChatMessage = ({ name, member, chatId, apiUrl, socketUrl, socketQuery, par
         paramKey,
         paramValue,
     });
-    useChatSocket({queryKey,addKey,updateKey})
+    useChatSocket({ queryKey, addKey, updateKey })
     useChatScrolling({
         chatRef, bottomRef, loadMore: fetchNextPage, shouldLoadMore: !isFetchingNextPage && !!hasNextPage, count: data?.pages?.[0]?.items?.length ?? 0,
     });
@@ -59,7 +59,7 @@ const ChatMessage = ({ name, member, chatId, apiUrl, socketUrl, socketQuery, par
             )}
 
             {hasNextPage && (
-                <div>
+                <div className="flex justify-center">
                     {isFetchingNextPage ? (<Loader2 className="h-6 w-6 text-zinc-500 animate-spin my-4"></Loader2>) : <button onClick={() => fetchNextPage()}>Load next page</button>}
                 </div>
             )}
@@ -67,8 +67,9 @@ const ChatMessage = ({ name, member, chatId, apiUrl, socketUrl, socketQuery, par
 
                 {data?.pages?.map((group, i) => (
                     <Fragment key={i}>
-                        {group?.items.map((message) => (
-                            <ChatItem
+                        {group?.items.map((message) => {
+                            return type !== "AI conversation" ? (<ChatItem
+                                type={type}
                                 key={message.id}
                                 id={message.id}
                                 currentMember={member}
@@ -80,8 +81,9 @@ const ChatMessage = ({ name, member, chatId, apiUrl, socketUrl, socketQuery, par
                                 isUpdated={message.updatedAt !== message.createdAt}
                                 socketUrl={socketUrl}
                                 socketQuery={socketQuery}
-                            />
-                        ))}
+                            />) : (<AiChatItem key= {message.id} GeminiResponse={message.GeminiResponse} prompt={message.UserPromt}></AiChatItem>)
+                        }
+                        )}
                     </Fragment>
                 ))}
                 <div ref={bottomRef} />

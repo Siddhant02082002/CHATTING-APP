@@ -9,6 +9,7 @@ import ChatInput from "@/components/Chat/ChatInput";
 import EmojiPick from "@/components/emojiPicker";
 import { Smile } from "lucide-react";
 import ChatMessage from "@/components/Chat/ChatMessage";
+import { MediaRoom } from "@/components/mediaRoom";
 
 
 
@@ -18,7 +19,6 @@ const MemberIdPage = async ({
   searchParams,
 }) => {
   const profile = await currentProfile();
-
   if (!profile) {
     return redirectToSignIn();
   }
@@ -55,18 +55,24 @@ const MemberIdPage = async ({
         serverId={params.serverId}
         type="conversation"
       />
-      <ChatMessage member={currentMember}
-        name={otherMember.profile.name}
-        chatId={conversation.id}
-        type="conversation"
-        apiUrl="/api/directMessages"
-        paramKey="conversationId"
-        paramValue={conversation.id}
-        socketUrl="/api/socket/direct-messages"
-        socketQuery={{
-          conversationId: conversation.id,
-        }}></ChatMessage>
-      <ChatInput type="conversation" apiUrl="/api/socket/direct-messages" query={{ conversationId: conversation.id }}></ChatInput>
+      {searchParams.video && (
+          <MediaRoom chatId={conversation.id} video={true} audio={true}></MediaRoom>
+      )}
+      {!searchParams.video && (
+        <>
+          <ChatMessage member={currentMember}
+            name={otherMember.profile.name}
+            chatId={conversation.id}
+            type="conversation"
+            apiUrl="/api/directMessages"
+            paramKey="conversationId"
+            paramValue={conversation.id}
+            socketUrl="/api/socket/direct-messages"
+            socketQuery={{
+              conversationId: conversation.id,
+            }}></ChatMessage>
+          <ChatInput type="conversation" apiUrl="/api/socket/direct-messages" query={{ conversationId: conversation.id }}></ChatInput>
+        </>)}
 
     </div>
   );

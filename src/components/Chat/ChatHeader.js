@@ -1,10 +1,10 @@
 import { Hash, Menu } from "lucide-react";
 import { MobileToggle } from "@/components/mobile-toggle";
 import { SocketIndicator } from "../socket-indicator";
+import { ChatVideoButton } from "./chatVideobutton";
 
 const ChatHeader = ({ name, serverId, type, imageUrl }) => {
     return (
-
         <div className="text-md font-semibold px-3 flex items-center h-14 border-neutral-200 dark:border-neutral-800 border-b-2">
             <MobileToggle serverId={serverId} />
             {type === "channel" ?
@@ -12,7 +12,10 @@ const ChatHeader = ({ name, serverId, type, imageUrl }) => {
 
             }
             <p>{name}</p>
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center">
+                {type === "conversation" && (
+                    <ChatVideoButton></ChatVideoButton>
+                )}
                 <SocketIndicator></SocketIndicator>
             </div>
         </div>

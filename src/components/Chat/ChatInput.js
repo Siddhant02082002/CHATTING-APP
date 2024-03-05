@@ -24,7 +24,6 @@ const ChatInput = ({ apiUrl, query, type }) => {
     });
     const onSubmitHandler = async (value) => {
         try {
-            console.log("hello", apiUrl);
             const url = qs.stringifyUrl({
                 url: apiUrl,
                 query: query,
